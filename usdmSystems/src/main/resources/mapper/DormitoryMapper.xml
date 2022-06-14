@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.donghu.mapper.DormitoryMapper">
+    <resultMap id="BaseMap" type="com.donghu.pojo.Dormitory">
+        <id column="id" property="id"/>
+        <result property="dnum" column="dnum"/>
+        <result property="DBname" column="DBname"/>
+    </resultMap>
+
+
+    <insert id="addDormitory">
+        INSERT INTO dormitory(dnum,bid)
+        VALUES (#{dum}, #{bid})
+    </insert>
+
+    <update id="updateDormitory">
+        update
+            dormitory
+        set dnum=#{dnum},
+            bid=#{bid}
+        where id = #{id};
+    </update>
+
+    <select id="FindAllDormitory" resultMap="BaseMap">
+        SELECT d.*,
+               b.bname as DBname
+        FROM dormitory d,
+             building b
+        WHERE d.bid = b.id
+
+
+    </select>
+    <select id="FindDormitoryByName" resultMap="BaseMap">
+        SELECT d.*,
+               b.bname as DBname
+        FROM dormitory d,
+             building b
+        WHERE d.bid = b.id
+          AND d.dnum = #{dnum}
+    </select>
+
+</mapper>

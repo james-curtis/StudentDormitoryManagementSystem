@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.donghu.mapper.EmployeeMapper">
+    <resultMap id="BaseMap" type="com.donghu.pojo.Employee">
+        <id column="id" property="id"/>
+        <result column="ename" property="ename"/>
+        <result column="etelephone" property="etelephone"/>
+        <result column="eposition" property="eposition"/>
+        <result column="bid" property="bid"/>
+
+        <association property="EBname" column="ebname"/>
+
+    </resultMap>
+
+
+    <!--    <select id="FindAllEmployee" resultType="com.donghu.pojo.Employee">-->
+    <!--        SELECT e.*,-->
+    <!--               b.bname as ebname-->
+    <!--        FROM employee e,-->
+    <!--             building b-->
+    <!--        WHERE b.id = e.bid-->
+
+    <!--    </select>-->
+
+    <insert id="AddEmployee">
+        insert
+        into employee(ename, etelephone, bid, eposition)
+        VALUES (#{ename},
+                #{etelephone},
+                #{eposition},
+                #{bid})
+    </insert>
+    <select id="findEidByName" resultType="java.lang.Integer">
+        SELECT e.id
+        FROM employee e
+        WHERE e.ename = #{ename}
+    </select>
+    <select id="FindEmployeeWithParams" resultType="com.donghu.pojo.Employee">
+        SELECT
+        e.id,e.ename,e.eposition,e.etelephone,e.bid,
+        b.bname as ebname
+        From employee e,
+        building b
+        <where>
+            <if test="1==1">
+
+                e.bid = b.id
+            </if>
+            <if test="param!=null and param!=''">
+                AND
+                ( e.eposition = #{param}
+                OR e.ename = #{param}
+                OR b.bname = #{param})
+            </if>
+
+        </where>
+
+
+    </select>
+</mapper>

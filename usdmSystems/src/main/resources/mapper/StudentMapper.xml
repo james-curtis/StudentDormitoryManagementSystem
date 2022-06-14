@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.donghu.mapper.StudentMapper">
+
+
+    <select id="FindStuByParam" resultType="com.donghu.pojo.StudentInfo">
+        SELECT
+        DISTINCT
+        s.*,
+        d.dnum
+        From
+        dormitory d,
+        student_info s
+        WHERE
+        <if test="1==1">
+
+            d.id=s.did
+        </if>
+        <if test="param!=null and param!=''">
+            AND
+            (
+            s.sname=#{param}
+            OR
+            s.snum=#{param}
+            OR
+            d.dnum=#{param}
+            OR
+            s.sgrade=#{param}
+            OR
+            s.sclass=#{param}
+            )
+        </if>
+        ORDER BY
+        s.id
+
+
+    </select>
+</mapper>

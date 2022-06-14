@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.donghu.mapper.BuildMapper">
+
+    <resultMap id="BaseResultMap" type="com.donghu.pojo.Building">
+        <id column="id" property="id"/>
+        <result column="Bname" property="bname"/>
+        <result column="BEmpName" property="BEmpName"/>
+        <!--        <collection property="BEmpName" ofType="com.donghu.pojo.Employee">-->
+        <!--            <result property="ename" column="ename"/>-->
+        <!--        </collection>-->
+
+<!--        <collection property="BEmpName" ofType="com.donghu.pojo.Housemaster">-->
+<!--            <result column="ename" property="ename"/>-->
+<!--        </collection>-->
+    </resultMap>
+    <insert id="addBuildAdmin">
+        INSERT INTO build_admin(adminid, bid)
+        VALUES (#{adminid}, #{bid})
+    </insert>
+    <update id="updateBuildEmp">
+        update
+            build_admin ba
+        set ba.adminid =#{eid}
+        where ba.bid = #{bid}
+
+
+    </update>
+    <delete id="DeleteBuildEmp">
+        DELETE
+        FROM build_admin
+        WHERE build_admin.bid = #{id}
+    </delete>
+
+    <select id="FindAllBuild" resultMap="BaseResultMap">
+        --         SELECT b.*,
+--                e.ename as ename
+--         FROM building b,
+--              employee e
+--         WHERE e.eposition = '宿管'
+--           AND b.id = e.bid;
+        SELECT b.*,
+               e.ename as ename
+        FROM building b,
+             employee e,
+             build_admin ba
+        WHERE b.id = ba.bid
+          AND e.id = ba.adminid
+    </select>
+
+    <select id="FindBuildByName" resultMap="BaseResultMap">
+
+        SELECT b.*,
+               e.ename as ename
+        FROM building b,
+             employee e
+        WHERE e.eposition = '宿管'
+          AND b.id = e.bid
+          AND b.bname = #{bname};
+    </select>
+    <select id="FindBuildIdByName" resultType="java.lang.Integer">
+        SELECT
+            b.id
+        FROM
+            building b
+        WHERE
+            b.bname=#{bname}
+    </select>
+</mapper>
